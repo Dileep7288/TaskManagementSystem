@@ -113,7 +113,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'task_management_db',  # Your database name
         'USER': 'root',                # MySQL user
-        'PASSWORD': '7288',   # MySQL user password
+        'PASSWORD': 'admin',   # MySQL user password
         'HOST': 'localhost',           # Use 'localhost' or IP address of MySQL server
         'PORT': '3306',
     }

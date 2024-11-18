@@ -11,3 +11,10 @@ Bypass password validation and create user anyway? [y/N]: y
 Bypass password validation and create user anyway? [y/N]: y
 Superuser created successfully.
 ```
+
+# Install all the requirements in the backennd folder
+-pip install -r requirements.txt
+-pip install django-filter
+
+# Install from the frontend folder
+-use command npm install
