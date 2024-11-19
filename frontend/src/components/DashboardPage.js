@@ -111,7 +111,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 rounded-lg shadow-lg font-bold">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 p-6">
       <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 drop-shadow-md font-serif">
         Dashboard
       </h1>
