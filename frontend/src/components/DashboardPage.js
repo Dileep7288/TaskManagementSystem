@@ -69,6 +69,16 @@ const DashboardPage = () => {
     navigate(`/edit-task/${taskId}`);
   };
 
+  // Calculate task statistics
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.status === "completed").length;
+  const pendingTasks = tasks.filter((task) => task.status === "yet-to-start" || task.status === "in-progress").length;
+  const priorityCounts = {
+    low: tasks.filter((task) => task.priority === "low").length,
+    medium: tasks.filter((task) => task.priority === "medium").length,
+    high: tasks.filter((task) => task.priority === "high").length,
+  };
+
   // Filter tasks
   useEffect(() => {
     let filtered = tasks;
@@ -117,6 +127,28 @@ const DashboardPage = () => {
       </h1>
 
       {error && <p className="text-red-500 text-center">{error}</p>}
+
+      {/* Task Statistics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-center">
+        <div className="p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-lg font-bold text-gray-800">Total Tasks</h3>
+          <p className="text-2xl font-semibold text-indigo-600">{totalTasks}</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-lg font-bold text-gray-800">Completed Tasks</h3>
+          <p className="text-2xl font-semibold text-green-600">{completedTasks}</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-lg font-bold text-gray-800">Pending Tasks</h3>
+          <p className="text-2xl font-semibold text-red-600">{pendingTasks}</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-lg font-bold text-gray-800">Tasks by Priority</h3>
+          <p className="text-sm text-gray-600">Low: {priorityCounts.low}</p>
+          <p className="text-sm text-gray-600">Medium: {priorityCounts.medium}</p>
+          <p className="text-sm text-gray-600">High: {priorityCounts.high}</p>
+        </div>
+      </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-6 mb-8 justify-center">

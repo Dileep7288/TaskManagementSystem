@@ -1,5 +1,6 @@
 # tasks/models.py
 
+from django.contrib.auth.models import User
 from django.db import models
 
 class Task(models.Model):
@@ -16,6 +17,7 @@ class Task(models.Model):
         ('hold', 'Hold'),
     ]
     
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')  # Link task to a user
     title = models.CharField(max_length=255)
     description = models.TextField()
     priority = models.CharField(max_length=6, choices=PRIORITY_CHOICES, default='low')
