@@ -27,5 +27,12 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']  # Default ordering by creation date (newest first)
+        indexes = [
+            models.Index(fields=['user', 'status']),  # Add index for common queries
+            models.Index(fields=['deadline']),
+        ]
+
     def __str__(self):
         return self.title
