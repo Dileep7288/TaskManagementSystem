@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -30,6 +31,16 @@ ALLOWED_HOSTS = ['127.0.0.1', '10.0.2.2','172.16.20.76']
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '172.16.20.76']
 
+
+# Media files configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Maximum size of uploaded files (5MB)
+MAX_UPLOAD_SIZE = 5242880
+
+# Allowed file types
+ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 
 # Application definition
 
@@ -59,6 +70,12 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+# File upload settings
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 
@@ -75,6 +92,11 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
+    ),
 }
 
 SIMPLE_JWT = {

@@ -6,6 +6,8 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import RegisterView, LoginView, LogoutView
 from .views import TaskCreateView, TaskListView, TaskUpdateView, TaskDeleteView
+from .views import UserProfileView, UpdateProfileView
+from .views import SuperuserLoginView,SuperuserDashboardView,SuperuserLogoutView,SuperuserRegistrationView
 
 
 urlpatterns = [
@@ -32,4 +34,22 @@ urlpatterns = [
     
     # Endpoint to delete a task by ID
     path('tasks/delete/<int:pk>/', TaskDeleteView.as_view(), name='task-delete'),
+
+    # Endpoint to see user information
+    path('user/profile/',UserProfileView.as_view(),name='user-profile'),
+
+    # Endpoint to update profile
+    path('user/update-profile/',UpdateProfileView.as_view(),name='update-profile'),
+
+    # Endpoint to superuser login
+    path('superuser/login/', SuperuserLoginView.as_view(), name='superuser_login'),
+
+    #Endpoint to superuser logout
+    path('superuser/logout/', SuperuserLogoutView.as_view(), name='superuser_logout'),
+
+    #Endpoint to superuser dashboard
+    path('superuser/dashboard/', SuperuserDashboardView.as_view(), name='superuser_dashboard'),
+
+    path('superuser/register/',SuperuserRegistrationView.as_view(),name='superuser_register'),
+
 ]
