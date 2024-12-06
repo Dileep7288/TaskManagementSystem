@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Task,UserProfile
 from .serializers import (
     TaskSerializer, UserRegisterSerializer, LoginSerializer, 
-    UserProfileSerializer, UpdateProfileSerializer, SuperuserLoginSerializer,SuperuserRegistrationSerializer
+    UserProfileSerializer, UpdateProfileSerializer, SuperuserLoginSerializer
 )
 from .filters import TaskFilter
 
@@ -314,6 +314,7 @@ class SuperuserDashboardView(APIView):
                 'id': task.id,
                 'title': task.title,
                 'description': task.description,
+                'priority':task.priority,
                 'status': task.status,
                 'deadline': task.deadline,
                 'created_at': task.created_at,
@@ -343,44 +344,49 @@ class SuperuserDashboardView(APIView):
             }
         }, status=status.HTTP_200_OK)
     
-class SuperuserRegistrationView(APIView):
-    permission_classes = [IsAdminUser]
-    serializer_class = SuperuserRegistrationSerializer
+        
+class SuperuserTaskDeleteView(generics.DestroyAPIView):
+    permission_classes=[IsAdminUser]
+    queryset=Task.objects.all()
 
-    def post(self, request):
+    def destroy(self, request, *args, **kwargs):
         try:
-            serializer = self.serializer_class(data=request.data)
-            
-            if serializer.is_valid():
-                user = serializer.save()
-                refresh = RefreshToken.for_user(user)
-
-                return Response({
-                    'status': 'success',
-                    'message': 'Superuser created successfully',
-                    'data': {
-                        'user': {
-                            'id': user.id,
-                            'username': user.username,
-                            'email': user.email,
-                            'is_superuser': user.is_superuser,
-                            'is_staff': user.is_staff
-                        },
-                        'tokens': {
-                            'access': str(refresh.access_token),
-                            'refresh': str(refresh)
-                        }
-                    }
-                }, status=status.HTTP_201_CREATED)
-            
+            instance=self.get_object()
+            self.perform_destroy(instance)
             return Response({
-                'status': 'error',
-                'message': 'Invalid data',
-                'errors': serializer.errors
-            }, status=status.HTTP_400_BAD_REQUEST)
-
+                'status':'success',
+                'message':'Task deleted successfully'
+            },status=status.HTTP_200_OK)
         except Exception as e:
             return Response({
-                'status': 'error',
-                'message': str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                'status':'error',
+                'message':str(e)
+            },status=status.HTTP_400_BAD_REQUEST)
+        
+class SuperuserUpdateView(generics.UpdateAPIView):
+    permission_classes=[IsAdminUser]
+    serializer_class=TaskSerializer
+    queryset=Task.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        try:
+            instance=self.get_object()
+            serializer=self.get_serializer(instance,data=request.data,partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    'status':'success',
+                    'message':'Task Updated Successfuly',
+                    'data':serializer.data
+                },status=status.HTTP_200_OK)
+            return Response({
+                'status':'error',
+                'message':'Invalid data',
+                'errors':serializer.errors
+            },status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({
+                'status':'error',
+                'message':str(e)
+            },status=status.HTTP_400_BAD_REQUEST)

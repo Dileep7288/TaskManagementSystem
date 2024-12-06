@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import RegisterView, LoginView, LogoutView
 from .views import TaskCreateView, TaskListView, TaskUpdateView, TaskDeleteView
 from .views import UserProfileView, UpdateProfileView
-from .views import SuperuserLoginView,SuperuserDashboardView,SuperuserLogoutView,SuperuserRegistrationView
+from .views import SuperuserLoginView,SuperuserDashboardView,SuperuserLogoutView,SuperuserTaskDeleteView,SuperuserUpdateView
 
 
 urlpatterns = [
@@ -50,6 +50,8 @@ urlpatterns = [
     #Endpoint to superuser dashboard
     path('superuser/dashboard/', SuperuserDashboardView.as_view(), name='superuser_dashboard'),
 
-    path('superuser/register/',SuperuserRegistrationView.as_view(),name='superuser_register'),
+    path('superuser/tasks/delete/<int:pk>/',SuperuserTaskDeleteView.as_view(),name='superuser-task-delete'),
+
+    path('superuser/tasks/update/<int:pk>/',SuperuserUpdateView.as_view(),name='superuser-task-update'),
 
 ]
